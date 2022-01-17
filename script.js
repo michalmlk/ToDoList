@@ -1,24 +1,23 @@
-let todoInput //miejsce, gdzie user wprowadza dane
-let errorInfo //info o errorze
+let todoInput //place, where user inserts data
+let errorInfo //info bout error
 let addBtn
-let ulList //lista zadań
+let ulList //list of tasks
 let newTodo
 let manageTools
 
-let popup //popup
-let popupInfo //tekst w popupie
-let todoToEdit //edytowany todos
+let popup
+let popupInfo //popup text
+let todoToEdit //edited todos
 let popupInput
 let popupAddBnt
 let popupCloseBtn
 
 const main = () => {
-	//wywołanie
 	prepareDOMElements()
 	prepareDOMEvents()
 }
 const prepareDOMElements = () => {
-	//pobieranie elemntów
+	//preparing elements
 	todoInput = document.querySelector('.todo-input')
 	errorInfo = document.querySelector('.error-info')
 	addBtn = document.querySelector('.btn-add')
@@ -31,14 +30,15 @@ const prepareDOMElements = () => {
 	popupCloseBtn = document.querySelector('.cancel')
 }
 const prepareDOMEvents = () => {
-	//nasluchiwania
+	//preparing events
 	addBtn.addEventListener('click', addNewTodo)
 	ulList.addEventListener('click', checkClick)
 	popupAddBnt.addEventListener('click', acceptTodo)
-	todoInput.addEventListener('keyup', checkKeyDown) //nasluchiwanie na entera
+	todoInput.addEventListener('keyup', checkKeyDown) //enter listener
 }
-//narzedzia(przyciski)
-document.addEventListener('DOMContentLoaded', main) //jeżeli cał DOM zostanie załadowany, dopiero wtedy włącz funkcje main
+//tools(buttons)
+document.addEventListener('DOMContentLoaded', main)
+//if DOM will be loaded, then switch on the main
 const createTools = () => {
 	const toolSpace = document.createElement('div')
 	toolSpace.classList.add('tools')
@@ -52,14 +52,16 @@ const createTools = () => {
 	const btnEdit = document.createElement('button')
 	btnEdit.classList.add('edit')
 	btnEdit.textContent = 'EDIT'
+	btnEdit.addEventListener('click',editTodo)
 
 	const btnDel = document.createElement('button')
 	btnDel.classList.add('delete')
 	btnDel.innerHTML = '<i class="fas fa-times"></i>'
+	btnDel.addEventListener('click',deleteTask)
 
 	toolSpace.append(btnComplete, btnEdit, btnDel)
 }
-//dodanie nowego todosa
+//adding new todos
 const addNewTodo = () => {
 	if (todoInput.value !== '') {
 		newTodo = document.createElement('li')
@@ -75,7 +77,7 @@ const addNewTodo = () => {
 		errorInfo.textContent = 'Type a task!'
 	}
 }
-//accept edytowanego todosa
+//accept edited todos
 const acceptTodo = e => {
 	if (popupInput.value !== '') {
 		todoToEdit.firstChild.textContent = popupInput.value
@@ -84,18 +86,18 @@ const acceptTodo = e => {
 		popupInfo.textContent = 'Your input is empty'
 	}
 }
-//edycja todosa
+//edit todos
 const editTodo = e => {
-	//funkcja do otwierania popupu
+	//popup opening function
 	popup.style.display = 'flex'
 	todoToEdit = e.target.closest('li')
 	popupInput.value = todoToEdit.firstChild.textContent
 }
-//zamykanie popupu
+//closing up popup
 const closePopup = () => {
 	popup.style.display = 'none'
 }
-//usuwanie zadanie
+//delete task
 const deleteTask = e => {
 	ulList.removeChild(e.target.closest('li'))
 	const allToDos = ulList.querySelectorAll('li')
@@ -103,13 +105,13 @@ const deleteTask = e => {
 		errorInfo.textContent = 'Nothing to do'
 	}
 }
-//sprawdzenie czy kliknieto enter
+//enter listener
 const checkKeyDown = e => {
 	if (e.key === 'Enter') {
 		addNewTodo()
 	}
 }
-//obsługa przycisków funkcyjnych
+//functional buttons 
 const checkClick = e => {
 	if (e.target.matches('.complete')) {
 		e.target.closest('li').classList.toggle('completed')
